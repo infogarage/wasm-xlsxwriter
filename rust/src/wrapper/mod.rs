@@ -15,6 +15,7 @@ mod url;
 mod utils;
 mod workbook;
 mod worksheet;
+mod conditional_format;
 
 use crate::error::XlsxError;
 use wasm_bindgen::prelude::wasm_bindgen;
