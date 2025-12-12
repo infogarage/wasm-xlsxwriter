@@ -222,4 +222,13 @@ impl Chart {
             chart: Arc::clone(&self.inner),
         }
     }
+
+    #[wasm_bindgen(js_name = "combine", skip_jsdoc)]
+    pub fn combine(&mut self, other: &Chart) -> Chart {
+        let mut chart = self.inner.lock().unwrap();
+        chart.combine(&*other.lock());
+        Chart {
+            inner: Arc::clone(&self.inner),
+        }
+    }
 }
