@@ -7,6 +7,7 @@ use crate::error::XlsxError;
 use crate::wrapper::{
     chart::Chart, datetime::ExcelDateTime, excel_data::ExcelData, format::Format,
     header_image_position::HeaderImagePosition, image::Image, table::Table, utils, WasmResult,
+    conditional_format::ConditionalFormatFormula,
 };
 
 use super::{
@@ -1753,5 +1754,24 @@ impl Worksheet {
         let sheet = book.worksheet_from_index(self.index).unwrap();
         sheet.set_margins(left, right, top, bottom, header, footer);
         self.clone()
+    }
+
+    // Currently supports ConditionalFormatFormula only
+    // TODO: Accept all ConditionalFormat types
+    #[wasm_bindgen(js_name = "addConditionalFormat", skip_jsdoc)]
+    pub fn add_conditional_format(
+        &mut self,
+        first_row: u32,
+        first_col: u16,
+        last_row: u32,
+        last_col: u16,
+        format: &ConditionalFormatFormula,
+    ) -> Result<Worksheet, JsValue> {
+        let mut book = self.workbook.lock().unwrap();
+        let sheet = book.worksheet_from_index(self.index).unwrap();
+        let inner = format.inner.clone();
+        let _ = sheet.add_conditional_format(first_row, first_col, last_row, last_col, &inner);
+
+        Ok(self.clone())
     }
 }
