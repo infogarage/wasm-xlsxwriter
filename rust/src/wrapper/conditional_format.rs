@@ -47,4 +47,9 @@ impl ConditionalFormatFormula {
     pub fn set_rule(&mut self, rule: &Formula) {
         self.inner = self.inner.clone().set_rule(&*rule.lock());
     }
+
+    #[wasm_bindgen(js_name = "setStopIfTrue", skip_jsdoc)]
+    pub fn set_stop_if_true(&mut self, enable: bool) {
+        self.inner = self.inner.clone().set_stop_if_true(enable);
+    }
 }
